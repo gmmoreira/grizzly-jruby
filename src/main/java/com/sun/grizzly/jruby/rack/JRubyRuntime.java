@@ -78,6 +78,9 @@ public class JRubyRuntime {
         if (System.getProperty("jruby.debug") != null) {
             iconfig.processArguments(new String[]{"-d"});
         }
+        
+        // start jruby on 1.8 mode
+        iconfig.processArguments(new String[] {"--1.8"});
 
         iconfig.setClassCache(cache);
         this.ruby = JavaEmbedUtils.initialize(libs, iconfig);
