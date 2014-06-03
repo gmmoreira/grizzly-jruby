@@ -147,7 +147,10 @@ public abstract class AbstractRackApplication implements RackApplication {
         populateFromMap(rackEnv, request.getAttributes());
 
         try {
-            rackEnv.put(rack_input, RubyIO.newIO(runtime, Channels.newChannel(grizzlyRequest.getInputStream())));
+            RubyIO streamIO = RubyIO.newIO(runtime, Channels.newChannel(grizzlyRequest.getInputStream()));
+            // Fix incompatible issue on jruby 1.5.2 and later.
+            streamIO.setAutoclose(false);
+            rackEnv.put(rack_input, streamIO);
         } catch (IOException ioe) {
             throw runtime.newIOErrorFromException(ioe);
         }
