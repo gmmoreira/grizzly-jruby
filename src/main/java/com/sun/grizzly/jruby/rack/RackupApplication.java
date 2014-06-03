@@ -36,7 +36,9 @@
 package com.sun.grizzly.jruby.rack;
 
 import com.sun.grizzly.jruby.RackGrizzlyAdapter;
+
 import org.jruby.Ruby;
+import org.jruby.internal.runtime.GlobalVariable.Scope;
 import org.jruby.runtime.builtin.IRubyObject;
 
 import java.io.File;
@@ -70,7 +72,7 @@ public class RackupApplication extends AbstractRackApplication {
 
             app = runtime.evalScriptlet("get_rackup_app('" + path + "','" + adapter.config.environment() + "')");
         }
-        runtime.defineReadonlyVariable("$glassfish_app", app);
+        runtime.defineReadonlyVariable("$glassfish_app", app, Scope.GLOBAL);
         return runtime.evalScriptlet("Rack::Handler::Grizzly.new($glassfish_app)");
     }
 }

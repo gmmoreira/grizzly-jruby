@@ -4,7 +4,7 @@
     <groupId>com.sun.grizzly</groupId>
     <artifactId>grizzly-jruby</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.31-SNAPSHOT</version>
+    <version>1.8.32-SNAPSHOT</version>
     <name>grizzly-jruby</name>
     <url>https://glassfish-scripting.dev.java.net</url>
     <scm>
@@ -20,7 +20,7 @@
         </repository>
     </distributionManagement>
     <properties>
-        <jruby.version>1.6.0</jruby.version>
+        <jruby.version>1.7.3</jruby.version>
         <jruby-monitor.version>1.5.11</jruby-monitor.version>
         <jruby-commons.version>1.4</jruby-commons.version>
         <grizzly-released-version>1.9.18-e</grizzly-released-version>

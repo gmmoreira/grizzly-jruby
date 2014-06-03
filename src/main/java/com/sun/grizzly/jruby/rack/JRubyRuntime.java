@@ -38,6 +38,7 @@ package com.sun.grizzly.jruby.rack;
 import org.glassfish.scripting.jruby.common.config.JRubyConfig;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
+import org.jruby.internal.runtime.GlobalVariable.Scope;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.jruby.util.ClassCache;
@@ -91,10 +92,10 @@ public class JRubyRuntime {
     }
 
     public static void configureJRubyRuntime(Ruby runtime, JRubyConfig config){
-        runtime.defineReadonlyVariable("$glassfish_config",
-                JavaEmbedUtils.javaToRuby(runtime, config));
+    	Scope scope = Scope.GLOBAL;
+        runtime.defineReadonlyVariable("$glassfish_config", JavaEmbedUtils.javaToRuby(runtime, config), scope);
         IRubyObject loggerObj = JavaEmbedUtils.javaToRuby(runtime, Logger.getLogger(JRubyRuntime.class.getName()));
-        runtime.defineReadonlyVariable("$logger", loggerObj);
+        runtime.defineReadonlyVariable("$logger", loggerObj, scope);
         String logLevel = System.getProperty("glassfish.log-level");
 
         if(logLevel != null){
@@ -111,7 +112,7 @@ public class JRubyRuntime {
             }
             //set the glassfish log level
             IRubyObject loggerLevelObj = JavaEmbedUtils.javaToRuby(runtime, logLevel);
-            runtime.defineReadonlyVariable("$glassfish_log_level", loggerLevelObj);
+            runtime.defineReadonlyVariable("$glassfish_log_level", loggerLevelObj, scope);
         }
     }
 

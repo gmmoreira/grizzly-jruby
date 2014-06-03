@@ -36,7 +36,9 @@
 package com.sun.grizzly.jruby.rack;
 
 import com.sun.grizzly.jruby.RackGrizzlyAdapter;
+
 import org.jruby.Ruby;
+import org.jruby.internal.runtime.GlobalVariable.Scope;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
 
@@ -50,9 +52,10 @@ public class SinatraApplication extends AbstractRackApplication {
     }
 
     private static  IRubyObject createApplicationObject(Ruby runtime, RackGrizzlyAdapter adapter) {
-        runtime.defineReadonlyVariable("$glassfish_appRoot", JavaEmbedUtils.javaToRuby(runtime,adapter.config.appRoot()));
-        runtime.defineReadonlyVariable("$glassfish_appFile", JavaEmbedUtils.javaToRuby(runtime,adapter.config.framework().initScript().getAbsolutePath()));
-        runtime.defineReadonlyVariable("$rackEnv", JavaEmbedUtils.javaToRuby(runtime, adapter.config.environment()));
+    	Scope scope = Scope.GLOBAL;
+        runtime.defineReadonlyVariable("$glassfish_appRoot", JavaEmbedUtils.javaToRuby(runtime,adapter.config.appRoot()), scope);
+        runtime.defineReadonlyVariable("$glassfish_appFile", JavaEmbedUtils.javaToRuby(runtime,adapter.config.framework().initScript().getAbsolutePath()), scope);
+        runtime.defineReadonlyVariable("$rackEnv", JavaEmbedUtils.javaToRuby(runtime, adapter.config.environment()), scope);
         runtime.evalScriptlet("require 'jruby/rack/sinatra'");
         System.out.println("Running sinatra");
         return runtime.evalScriptlet(
